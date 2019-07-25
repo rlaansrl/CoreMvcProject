@@ -29,6 +29,19 @@ namespace CoreMvcProject.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register([Bind("UserId,UserPw,UserName,UserEmail")]User user)
+        {
+            if (ModelState.IsValid)
+            {
+                user.UserRegisterDate = DateTime.Now;
+                _context.Add(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("index","Home");
+            }
+            return View();
+        }
 
     }
 }
